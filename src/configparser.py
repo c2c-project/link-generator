@@ -1,2 +1,0 @@
-# PARSES CONFIG
-import json
