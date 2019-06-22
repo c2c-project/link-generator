@@ -23,14 +23,13 @@ def getLists():
     return response.json()['result']['elements']
     
 
-def modifyList():
+# runs any put hooks before the actual put requests, such as generate a backup
+def putHook():
     pass
 
-def setTarget():
+def putList():
     pass
 
-def getTarget():
-    pass
 
 if __name__ == "__main__":
     print(CONFIG['rootUrl'])
