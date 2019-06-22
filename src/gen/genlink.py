@@ -1,2 +1,0 @@
-# GENERATES LINKS TO UPLOAD TO API
-import validators

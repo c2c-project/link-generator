@@ -4,6 +4,10 @@
 import cmd,sys
 # module imports
 import qapi
+from parseconfig import config
+
+CONFIG = config()
+API_URL = CONFIG['apiUrl'] + 'mailinglists'
 
 class C2CShell(cmd.Cmd):
     intro = 'Welcome to C2CShell. Type help or ? to list commands.'
@@ -19,10 +23,14 @@ class C2CShell(cmd.Cmd):
 
     def do_gencsv(self, *args):
         pass
-
+    
     def do_upload(self, *args):
-        'Upload generated links'
-        pass
+        'Upload generated links; must do after you select a contact list'
+        if self.targetList == None:
+            print('You must select a target list first! Type `list` then `select <list # you want>`')
+        else:
+            contacts = qapi.getContacts(CONFIG, API_URL, self.targetList)
+            # withLinks = 
     
     def do_select(self, *args):
         'Select a list for manipulation'
@@ -36,7 +44,7 @@ class C2CShell(cmd.Cmd):
 
     def do_list(self, *args):
         'Show all contact lists from Qualtrics'
-        self.contactLists = qapi.getLists()
+        self.contactLists = qapi.getLists(CONFIG, API_URL)
         print('{3:<10} {0:<40} {1:<40} {2:<40}'.format('name', 'category', 'folder', '#'))
         # cList = contactList dict
         for index,cList in enumerate(self.contactLists):
