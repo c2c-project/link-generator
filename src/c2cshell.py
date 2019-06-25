@@ -5,9 +5,11 @@ import cmd,sys
 # module imports
 import qapi
 from parseconfig import config
+import genlink
 
 CONFIG = config()
-API_URL = CONFIG['apiUrl'] + 'mailinglists'
+API_URL = CONFIG['apiUrl'] + 'mailinglists/'
+REG_URL = CONFIG['regUrl']
 
 class C2CShell(cmd.Cmd):
     intro = 'Welcome to C2CShell. Type help or ? to list commands.'
@@ -17,12 +19,6 @@ class C2CShell(cmd.Cmd):
         super(C2CShell, self).__init__()
         self.targetList = None
         self.contactLists = None
-
-    def do_genlinks(self, *args):
-        pass
-
-    def do_gencsv(self, *args):
-        pass
     
     def do_upload(self, *args):
         'Upload generated links; must do after you select a contact list'
@@ -30,7 +26,8 @@ class C2CShell(cmd.Cmd):
             print('You must select a target list first! Type `list` then `select <list # you want>`')
         else:
             contacts = qapi.getContacts(CONFIG, API_URL, self.targetList)
-            # withLinks = 
+            withLinks = genlink.genLinks(REG_URL, contacts)
+            qapi.putList(withLinks)
     
     def do_select(self, *args):
         'Select a list for manipulation'

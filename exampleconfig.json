@@ -1,5 +1,5 @@
 {
     "apiUrl": "https://yourdatacenterid.az1.qualtrics.com/API/v3/",
     "apiToken": "123456",
-    "registrationUrl": "https://example.com/"
+    "regUrl": "https://example.com/"
 }

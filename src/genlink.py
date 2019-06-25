@@ -2,13 +2,15 @@
 import validators
 from furl import furl
 
-def genLinks(baseUrl, contacts):
+def genLinks(regUrl, contacts):
+    retVal = []
     for contact in contacts:
-        f = furl(baseUrl)
-        firstName, lastName, email = contact
-        # id is a reserved word in python for objects...
-        contactId = contact.id
-        modifiedUrl = f.add({ 'fname': firstName, 'lName': lastName, 'email': email, 'qId': contactId })
-        print(modifiedUrl)
-
-        
+        f = furl(regUrl)
+        modifiedUrl = f.add({ 'fname': contact['firstName'], 'lName': contact['lastName'], 'email': contact['email'], 'qId': contact['id'] }).url
+        if not validators.url(modifiedUrl):
+            print('ERR: URL IS NOT VALID')
+            return
+        copy = contact
+        copy['sessionUrl'] = modifiedUrl
+        retVal.append(copy)
+    return retVal
