@@ -18,7 +18,9 @@ class C2CShell(cmd.Cmd):
     def __init__(self):
         super(C2CShell, self).__init__()
         self.targetList = None
-        self.contactLists = None
+        self.contactLists = qapi.getLists(CONFIG, API_URL)
+        print('Loading Qualtrics Contact Lists...')
+    
     
     def do_upload(self, *args):
         'Upload generated links; must do after you select a contact list'
@@ -27,7 +29,9 @@ class C2CShell(cmd.Cmd):
         else:
             contacts = qapi.getContacts(CONFIG, API_URL, self.targetList)
             withLinks = genlink.genLinks(REG_URL, contacts)            
-            qapi.putList(CONFIG, API_URL, self.targetList , withLinks)
+            response = qapi.putList(CONFIG, API_URL, self.targetList , withLinks)
+            print(response)
+            print('If you see `200 - OK`, above then everything is good to go!')
     
     def do_select(self, *args):
         'Select a list for manipulation'
@@ -42,10 +46,10 @@ class C2CShell(cmd.Cmd):
     def do_list(self, *args):
         'Show all contact lists from Qualtrics'
         self.contactLists = qapi.getLists(CONFIG, API_URL)
-        print('{3:<10} {0:<40} {1:<40} {2:<40}'.format('name', 'category', 'folder', '#'))
+        print('{3:<10} {0:<25} {1:<25} {2:<25}'.format('name', 'category', 'folder', '#'))
         # cList = contactList dict
         for index,cList in enumerate(self.contactLists):
-            print('{1:<10} {0[name]:<40} {0[category]:<40} {0[folder]:<40}'.format(cList, index))
+            print('{1:<10} {0[name]:<25} {0[category]:<25} {0[folder]:<25}'.format(cList, index))
         print('HINT: type `select <# of list you want to select>` to select it for further manipulation with other commands')
 
     def do_exit(self, *args):

@@ -11,10 +11,10 @@ def genLinks(regUrl, contacts):
             print('ERR: URL IS NOT VALID')
             return
         copy = contact
-        # if copy['embeddedData']:
-        #     copy['embeddedData']['sessionUrl'] = modifiedUrl
-        # else:
-        #     copy['embeddedData'] = dict()
-        #     copy['embeddedData']['sessionUrl'] = modifiedUrl
+        if copy['embeddedData']:
+            copy['embeddedData']['sessionUrl'] = modifiedUrl
+        else:
+            copy['embeddedData'] = dict()
+            copy['embeddedData']['sessionUrl'] = modifiedUrl
         retVal.append(copy)
     return retVal

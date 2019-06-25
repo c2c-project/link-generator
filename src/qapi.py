@@ -3,8 +3,8 @@ import requests
 import json
 from urllib.parse import urlparse
 import validators
-import pprint
 import genbackup
+import gencsv
 
 # https://api.qualtrics.com/reference#list-mailing-lists
 # curl -H 'X-API-TOKEN: yourtokenhere' 'https://yourdatacenterid.qualtrics.com/API/v3/mailinglists'
@@ -29,25 +29,34 @@ def getContacts(config, apiUrl, targetList):
 # runs any put hooks before the actual put requests, such as generate a backup
 def putHook(updatedList):
     genbackup.backup(updatedList)
+    gencsv.backup(updatedList)
+
+def mapfunc(contact):
+    retVal = dict()
+    for key in contact:
+        if contact[key]:
+            print(key)
+            retVal[key] = contact[key]
+    return retVal
+
 
 # curl -X POST -H 'X-API-TOKEN: <API Token>' -H "Content-Type: application/json"  --data @contacts.json  'https://co1.qualtrics.com/API/v3/mailinglists/CG_6F1gRt186CZOVoh/contactimports'
 # https://api.qualtrics.com/reference#create-contacts-import
+# IMPORTANT: must eliminate all falsy field values before reuploading to qualtrics via api, otherwise it will err
 def putList(config, apiUrl, targetList, updatedList):
     newUrl = apiUrl + targetList['id'] + '/contactimports'
-    print(newUrl)
     putHook(updatedList)
     headers = {
         'x-api-token': config['apiToken'],
         'content-type': 'application/json'
     }
+    mappedContacts = map(mapfunc, updatedList)
     formatted = {
-        "contacts": updatedList
+        "contacts": list(mappedContacts)
     }
-    print(formatted)
-    jsonString = json.dumps(formatted)
+    jsonString = json.dumps(formatted, indent = 4)
     response = requests.post(url = newUrl, data = jsonString, headers = headers)
-    print(response.json())
-    pass
+    return response.json()
 
 
 if __name__ == "__main__":
