@@ -26,8 +26,8 @@ class C2CShell(cmd.Cmd):
             print('You must select a target list first! Type `list` then `select <list # you want>`')
         else:
             contacts = qapi.getContacts(CONFIG, API_URL, self.targetList)
-            withLinks = genlink.genLinks(REG_URL, contacts)
-            qapi.putList(withLinks)
+            withLinks = genlink.genLinks(REG_URL, contacts)            
+            qapi.putList(CONFIG, API_URL, self.targetList , withLinks)
     
     def do_select(self, *args):
         'Select a list for manipulation'

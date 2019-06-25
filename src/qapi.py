@@ -30,8 +30,23 @@ def getContacts(config, apiUrl, targetList):
 def putHook(updatedList):
     genbackup.backup(updatedList)
 
-def putList(updatedList):
+# curl -X POST -H 'X-API-TOKEN: <API Token>' -H "Content-Type: application/json"  --data @contacts.json  'https://co1.qualtrics.com/API/v3/mailinglists/CG_6F1gRt186CZOVoh/contactimports'
+# https://api.qualtrics.com/reference#create-contacts-import
+def putList(config, apiUrl, targetList, updatedList):
+    newUrl = apiUrl + targetList['id'] + '/contactimports'
+    print(newUrl)
     putHook(updatedList)
+    headers = {
+        'x-api-token': config['apiToken'],
+        'content-type': 'application/json'
+    }
+    formatted = {
+        "contacts": updatedList
+    }
+    print(formatted)
+    jsonString = json.dumps(formatted)
+    response = requests.post(url = newUrl, data = jsonString, headers = headers)
+    print(response.json())
     pass
 
 
@@ -40,4 +55,5 @@ if __name__ == "__main__":
     # print(validators.url('asdf'))
     # print()
     # getLists()
+    # the above can be uncommented for testing/debugging purposes
     pass
