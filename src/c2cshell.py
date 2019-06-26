@@ -1,13 +1,10 @@
 # IMPLEMENTS ALL MODULES & IS A CLI
-
-# python lib imports
 import cmd,sys
-# module imports
 import qapi
-from parseconfig import config
+import parseconfig
 import genlink
 
-CONFIG = config()
+CONFIG = parseconfig.config()
 API_URL = CONFIG['apiUrl'] + 'mailinglists/'
 REG_URL = CONFIG['regUrl']
 
@@ -20,7 +17,6 @@ class C2CShell(cmd.Cmd):
         self.targetList = None
         self.contactLists = qapi.getLists(CONFIG, API_URL)
         print('Loading Qualtrics Contact Lists...')
-    
     
     def do_upload(self, *args):
         'Upload generated links; must do after you select a contact list'
@@ -55,8 +51,6 @@ class C2CShell(cmd.Cmd):
     def do_exit(self, *args):
         'Exit C2CShell'
         return True
-
-
 
 if __name__ == "__main__":
     C2CShell().cmdloop()

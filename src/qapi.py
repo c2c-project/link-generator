@@ -29,7 +29,7 @@ def getContacts(config, apiUrl, targetList):
 # runs any put hooks before the actual put requests, such as generate a backup
 def putHook(updatedList):
     genbackup.backup(updatedList)
-    gencsv.backup(updatedList)
+    # gencsv.backup(updatedList)
 
 def mapfunc(contact):
     retVal = dict()
@@ -38,7 +38,6 @@ def mapfunc(contact):
             print(key)
             retVal[key] = contact[key]
     return retVal
-
 
 # curl -X POST -H 'X-API-TOKEN: <API Token>' -H "Content-Type: application/json"  --data @contacts.json  'https://co1.qualtrics.com/API/v3/mailinglists/CG_6F1gRt186CZOVoh/contactimports'
 # https://api.qualtrics.com/reference#create-contacts-import
@@ -57,7 +56,6 @@ def putList(config, apiUrl, targetList, updatedList):
     jsonString = json.dumps(formatted, indent = 4)
     response = requests.post(url = newUrl, data = jsonString, headers = headers)
     return response.json()
-
 
 if __name__ == "__main__":
     # print(CONFIG['apiUrl'])
