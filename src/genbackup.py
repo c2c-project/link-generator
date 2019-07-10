@@ -30,12 +30,12 @@ def gencsv(backupTarget):
 
         for contact in backupTarget:
             # must do this to maintain order integrity
-            print(contact)
+            # print(contact)
             row = list()
             for key in headers:
-                if key in contact:
+                if key in contact and contact[key]:
                     row = row + [contact[key]]
-                elif contact['embeddedData'] and key in contact['embeddedData']:
+                elif key in contact['embeddedData'] and contact['embeddedData'][key]:
                     row = row + [contact['embeddedData'][key]]
                 else:
                     row = row + ['']

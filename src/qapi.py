@@ -28,7 +28,7 @@ def getContacts(config, apiUrl, targetList, urlOverride = None):
     nextPage = response['nextPage']
     results = response['elements']
     if (nextPage):
-        results.append(getContacts(config,apiUrl,targetList, urlOverride=nextPage))
+        results = results + getContacts(config,apiUrl,targetList, urlOverride=nextPage)
     # print(results)
     return results
 
