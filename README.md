@@ -16,7 +16,8 @@ __NOTE__: the trailing `/` in any url should be present, if one is needed.
 - `show`: Show currently selected list
 - `select <#>`: Select a list for manipulation
 - `upload`: Upload generated links; must do after you select a contact list
-- `backup`: generate a backup.txt and backup.csv with corresponding generated links. __NOTE__: backup.* is always overwritten with each `backup` invocation
+- `backup`: Generate a backup.txt and backup.csv with corresponding generated links, using the currently selected list.
+ __NOTE__: backup.* is always overwritten with each `backup` invocation
 
 # Example
 The current ideal way to use this is as follows:

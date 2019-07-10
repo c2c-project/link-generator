@@ -50,7 +50,7 @@ class C2CShell(cmd.Cmd):
         print('HINT: type `select <# of list you want to select>` to select it for further manipulation with other commands')
     
     def do_backup(self, *args):
-        'Backup currently selected contact list'
+        'Generate a backup.txt and backup.csv with corresponding generated links, using the currently selected list.'
         if self.targetList == None:
             print('Must select a list to backup first! Type `help list`')
         else:
