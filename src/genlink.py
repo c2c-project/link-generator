@@ -4,9 +4,11 @@ from furl import furl
 
 def genLinks(regUrl, contacts):
     retVal = []
+    print(len(contacts))
     for contact in contacts:
         f = furl(regUrl)
-        modifiedUrl = f.add({ 'fname': contact['firstName'], 'lName': contact['lastName'], 'email': contact['email'], 'qId': contact['id'] }).url
+        name = contact['embeddedData']['Voters_FirstName'] + ' ' + contact['embeddedData']['Voters_LastName'][0];
+        modifiedUrl = f.add({ 'client': '18591', 'name': name, 'uniqueid': contact['id'], }).url
         if not validators.url(modifiedUrl):
             print('ERR: URL IS NOT VALID')
             return

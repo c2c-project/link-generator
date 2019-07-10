@@ -35,7 +35,7 @@ def mapfunc(contact):
     retVal = dict()
     for key in contact:
         if contact[key]:
-            print(key)
+            # print(key)
             retVal[key] = contact[key]
     return retVal
 
