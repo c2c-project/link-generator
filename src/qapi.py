@@ -4,7 +4,6 @@ import json
 from urllib.parse import urlparse
 import validators
 import genbackup
-import gencsv
 
 # https://api.qualtrics.com/reference#list-mailing-lists
 # curl -H 'X-API-TOKEN: yourtokenhere' 'https://yourdatacenterid.qualtrics.com/API/v3/mailinglists'
@@ -36,7 +35,6 @@ def getContacts(config, apiUrl, targetList, urlOverride = None):
 # runs any put hooks before the actual put requests, such as generate a backup
 def putHook(updatedList):
     genbackup.backup(updatedList)
-    # gencsv.backup(updatedList)
 
 def isIterable(val):
     return isinstance(val, dict) or isinstance(val, list)

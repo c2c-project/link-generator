@@ -3,6 +3,7 @@ import cmd,sys
 import qapi
 import parseconfig
 import genlink
+import genbackup
 
 CONFIG = parseconfig.config()
 API_URL = CONFIG['apiUrl'] + 'mailinglists/'
@@ -17,7 +18,7 @@ class C2CShell(cmd.Cmd):
         self.targetList = None
         self.contactLists = qapi.getLists(CONFIG, API_URL)
         print('Loading Qualtrics Contact Lists...')
-    
+
     def do_upload(self, *args):
         'Upload generated links; must do after you select a contact list'
         if self.targetList == None:
@@ -47,6 +48,15 @@ class C2CShell(cmd.Cmd):
         for index,cList in enumerate(self.contactLists):
             print('{1:<10} {0[name]:<25} {0[category]:<25} {0[folder]:<25}'.format(cList, index))
         print('HINT: type `select <# of list you want to select>` to select it for further manipulation with other commands')
+    
+    def do_backup(self, *args):
+        'Backup currently selected contact list'
+        if self.targetList == None:
+            print('Must select a list to backup first! Type `help list`')
+        else:
+            contacts = qapi.getContacts(CONFIG, API_URL, self.targetList)
+            genbackup.backup(contacts)
+            print('Look for a file named backup.csv in the root directory of the script!')
 
     def do_exit(self, *args):
         'Exit C2CShell'
