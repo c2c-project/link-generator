@@ -17,27 +17,59 @@ def getLists(config, apiUrl):
 
 # https://api.qualtrics.com/reference#list-contacts
 # curl -H 'X-API-TOKEN: yourtokenhere' 'https://yourdatacenterid.qualtrics.com/API/v3/mailinglists/ML_1234567890AbCdE/contacts'
-def getContacts(config, apiUrl, targetList):
+def getContacts(config, apiUrl, targetList, urlOverride = None):
     headers = {
         'x-api-token': config['apiToken']
     }
     url = apiUrl + targetList['id'] + '/contacts'
-    print(url)
-    response = requests.get(url, headers = headers)
-    return response.json()['result']['elements']
+    if (urlOverride):
+        url = urlOverride
+    response = requests.get(url, headers = headers).json()['result']
+    # print(response)
+    nextPage = response['nextPage']
+    results = response['elements']
+    if (nextPage):
+        results.append(getContacts(config,apiUrl,targetList, urlOverride=nextPage))
+    # print(results)
+    return results
 
 # runs any put hooks before the actual put requests, such as generate a backup
 def putHook(updatedList):
     genbackup.backup(updatedList)
     # gencsv.backup(updatedList)
 
-def mapfunc(contact):
+def isIterable(val):
+    return isinstance(val, dict) or isinstance(val, list)
+
+def parseDict(contact):
     retVal = dict()
     for key in contact:
-        if contact[key]:
-            # print(key)
-            retVal[key] = contact[key]
+        if contact[key] and not key == 'emailHistory':
+            value = contact[key]
+            if(isIterable(value)):
+                value = mapfunc(value)
+            retVal[key] = value
     return retVal
+
+
+# caution: using it as if it were mutable
+def parseList(contact):
+    retVal = list()
+    for n in contact:
+        if n:
+            value = n
+            if(isIterable(value)):
+                value = mapfunc(value)
+            retVal = retVal + [value]
+    return retVal
+
+def mapfunc(contact):
+    if isinstance(contact, dict):
+        return parseDict(contact)
+    elif isinstance(contact, list):
+        return parseList(contact)
+    else:
+        print('Error: not list or dict, somhow. :(')
 
 # curl -X POST -H 'X-API-TOKEN: <API Token>' -H "Content-Type: application/json"  --data @contacts.json  'https://co1.qualtrics.com/API/v3/mailinglists/CG_6F1gRt186CZOVoh/contactimports'
 # https://api.qualtrics.com/reference#create-contacts-import
