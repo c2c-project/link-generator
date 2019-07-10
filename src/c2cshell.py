@@ -55,7 +55,8 @@ class C2CShell(cmd.Cmd):
             print('Must select a list to backup first! Type `help list`')
         else:
             contacts = qapi.getContacts(CONFIG, API_URL, self.targetList)
-            genbackup.backup(contacts)
+            withLinks = genlink.genLinks(REG_URL, contacts)
+            genbackup.backup(withLinks)
             print('Look for a file named backup.csv in the root directory of the script!')
 
     def do_exit(self, *args):

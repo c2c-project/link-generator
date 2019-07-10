@@ -12,8 +12,8 @@ def gentxt(backupTarget):
 def gencsv(backupTarget):
     # print(backupTarget)
     keys = list()
-    initialHeaders = ['id','firstName', 'lastName', 'email', 'externalDataReference']
-    qHeaders = ['RecipientID','FirstName', 'LastName', 'PrimaryEmail', 'ExternalDataReference']
+    initialHeaders = ['id','firstName', 'lastName', 'email', 'externalDataReference', 'language']
+    qHeaders = ['RecipientID','FirstName', 'LastName', 'PrimaryEmail', 'ExternalDataReference', 'Language']
     with open('backup.csv', 'w') as f:
         csvwriter = csv.writer(f)
 
@@ -21,7 +21,7 @@ def gencsv(backupTarget):
         for contact in backupTarget:
             if contact['embeddedData']:
                 for key in list(contact['embeddedData'].keys()):
-                    if key not in initialHeaders:
+                    if key not in initialHeaders and key not in keys:
                         keys = keys + [key]
         headers = initialHeaders + keys
         printedHeaders = qHeaders + keys
