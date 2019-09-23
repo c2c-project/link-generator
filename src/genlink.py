@@ -8,8 +8,9 @@ def genLinks(regUrl, contacts):
     print(len(contacts))
     for contact in contacts:
         f = furl(regUrl)
-        # extract name
+        # extract first name + first letter of last name
         name = contact['embeddedData']['RecipientFirstName'] + ' ' + contact['embeddedData']['RecipientLastName'][0];
+        # extract study id
         studyId = contact['embeddedData']['study_id']
         
         # for duplicate names, append a number to them
@@ -18,7 +19,7 @@ def genLinks(regUrl, contacts):
         names = names + [name]
 
         # url generation
-        modifiedUrl = f.add({ 'client': '18653', 'name': name, 'uniqueid': studyId, }).url
+        modifiedUrl = f.add({ 'client': '18718', 'name': name, 'uniqueid': studyId, }).url
         if not validators.url(modifiedUrl):
             print('ERR: URL IS NOT VALID')
             return
