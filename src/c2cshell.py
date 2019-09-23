@@ -57,6 +57,7 @@ class C2CShell(cmd.Cmd):
             contacts = qapi.getContacts(CONFIG, API_URL, self.targetList)
             withLinks = genlink.genLinks(REG_URL, contacts)
             genbackup.backup(withLinks)
+            genbackup.genLinkInfo(withLinks)
             print('Look for a file named backup.csv in the root directory of the script!')
 
     def do_exit(self, *args):
