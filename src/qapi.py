@@ -87,6 +87,16 @@ def putList(config, apiUrl, targetList, updatedList):
     response = requests.post(url = newUrl, data = jsonString, headers = headers)
     return response.json()
 
+# https://api.qualtrics.com/reference#section-generate-distribution-links
+# used to generate distribution link to a survey
+def genSurveyLinks():
+    pass
+
+# https://api.qualtrics.com/reference#section-generate-distribution-links
+# used to retrieve the generated links
+def getSurveyLinks():
+    pass
+
 if __name__ == "__main__":
     # print(CONFIG['apiUrl'])
     # print(validators.url('asdf'))
