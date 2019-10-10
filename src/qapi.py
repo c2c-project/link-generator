@@ -42,7 +42,7 @@ def isIterable(val):
 def parseDict(contact):
     retVal = dict()
     for key in contact:
-        if contact[key] and not key == 'emailHistory':
+        if contact[key] and not key == 'emailHistory' and not key == 'language':
             value = contact[key]
             if(isIterable(value)):
                 value = mapfunc(value)

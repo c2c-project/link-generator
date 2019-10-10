@@ -9,7 +9,7 @@ def genLinks(regUrl, contacts):
     for contact in contacts:
         f = furl(regUrl)
         # extract first name + first letter of last name
-        name = contact['embeddedData']['RecipientFirstName'] + ' ' + contact['embeddedData']['RecipientLastName'][0];
+        name = contact['embeddedData']['First_Name'] + ' ' + contact['embeddedData']['Last_Name'][0];
         # extract study id
         studyId = contact['embeddedData']['study_id']
         

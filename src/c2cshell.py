@@ -43,10 +43,12 @@ class C2CShell(cmd.Cmd):
     def do_list(self, *args):
         'Show all contact lists from Qualtrics'
         self.contactLists = qapi.getLists(CONFIG, API_URL)
-        print('{3:<10} {0:<25} {1:<25} {2:<25}'.format('name', 'category', 'folder', '#'))
+        # print('{3:<10} {0:<25} {1:<25} {2:<25}'.format('name', 'category', 'folder', '#'))
+        print('{0:<25} {1:<25}'.format( '#', 'name'))
         # cList = contactList dict
         for index,cList in enumerate(self.contactLists):
-            print('{1:<10} {0[name]:<25} {0[category]:<25} {0[folder]:<25}'.format(cList, index))
+            # print('{1:<10} {0[name]:<25} {0[category]:<25} {0[folder]:<25}'.format(cList, index))
+            print('{1:<10} {0[name]:<25}'.format(cList, index))
         print('HINT: type `select <# of list you want to select>` to select it for further manipulation with other commands')
     
     def do_backup(self, *args):
